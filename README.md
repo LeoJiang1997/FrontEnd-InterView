@@ -8,4 +8,4 @@
 ## 前端交流群🙈
 
 <p>如果你在工作中遇到问题、在面试中遇到疑惑、在前端路上遇到了阻碍，又或者想对该仓库作出贡献，都可以加入我们前端 Family，我们会竭尽全力为大家答疑解惑，让我们共同努力，一同成长。</p>
-<div align='center'><img src="./assets/wechat.png" alt="img" style="max-width:50%;" /><div>
+<div align='center'><img src="assets/wechat.png" alt="img" style="max-width:50%;" /><div>
