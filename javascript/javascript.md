@@ -13,6 +13,7 @@
 9. 防抖/节流
 10. bind、call、apply 的区别
 11. 判断数据类型的方法有哪些
+12. 介绍下 promise 的特性、优缺点，内部是如何实现的，动手实现
 
 ## 非高频
 
@@ -441,6 +442,66 @@ apply接收的是数组，call接收的是参数列表，bind接收的是参数�
 
 ### 判断数据类型的方法有哪些
 <img src="./../assets/js-img/判断数据类型的方法.png">
+
+### 介绍下 promise 的特性、优缺点，内部是如何实现的，动手实现
+1、Promise有三种状态：pending(进行中)、fulfilled(已成功)、rejected(已失败)
+2、Promise对象接受一个回调函数作为参数, 该回调函数接受两个参数，分别是成功时的回调resolve和失败时的回调reject；另外resolve的参数除了正常值以外， 还可能是一个Promise对象的实例；reject的参数通常是一个Error对象的实例。
+3、then方法返回一个新的Promise实例，并接收两个参数onResolved(fulfilled状态的回调)；onRejected(rejected状态的回调，该参数可选)
+4、catch方法返回一个新的Promise实例
+5、finally方法不管Promise状态如何都会执行，该方法的回调函数不接受任何参数
+
+**优点**
+①统一异步 API
+Promise 的一个重要优点是它将逐渐被用作浏览器的异步 API ，统一现在各种各样的 API ，以及不兼容的模式和手法。
+②Promise 支持链式处理
+③Promise 解决了回调地狱的问题，将异步操作以同步操作的流程表达出来。
+
+**缺点**
+1、无法取消Promise，一旦新建它就会立即执行，无法中途取消。
+2、如果不设置回调函数，Promise内部抛出的错误，不会反应到外部。
+3、当处于Pending状态时，无法得知目前进展到哪一个阶段（刚刚开始还是即将完成）。
+
+```javascript
+function myPromise(constructor){
+  let self = this;
+  self.status = "pending"; //定义状态改变前的初始状态
+  self.value = undefined; //定义状态为resolved的时候的状态
+  self.reason = undefined; //定义状态为reject的时候的状态
+  function resolve(value){
+    if(self.status === "pending"){
+      self.value = value;
+      self.status = "resolved";
+    }
+  }
+
+  function reject(reason){
+    if(self.status === "pending"){
+      self.value = value;
+      self.status = "rejected";
+    }
+  }
+  
+  //捕获构造异常
+  try{
+    constructor(resolve, reject);
+  }catch(e){
+    reject(e);
+  }
+}
+
+myPromise.prototype.then = function(onFullfilled,onRejected){
+  let self = this;
+  switch(self.status){
+    case "resolved": onFullfilled(self.value); break;
+    case "rejected": onRejected(self.reanson); break;
+    default;
+  }
+}
+
+//测试
+var p = new myPromise(function(resolve,reject){resolve(1)});
+p.then(function(x){console.log(x)});
+```
 
 ## 非高频问题回答
 
